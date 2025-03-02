@@ -1,4 +1,12 @@
-document.addEventListener("DOMContentLoaded", aggiornaTabella);
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof db === "undefined") {
+        console.error("Errore: Firebase non è stato caricato correttamente.");
+        return;
+    }
+
+    console.log("Firebase è pronto!");
+    aggiornaTabella();
+});
 
 function creaNuovoConto() {
     let nome = prompt("Inserisci il nome del conto:");
@@ -74,13 +82,4 @@ function aggiungi(id) {
         alert("Importo non valido.");
     }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    if (typeof db === "undefined") {
-        console.error("Errore: Firebase non è stato caricato correttamente.");
-    } else {
-        console.log("Firebase è pronto!");
-        aggiornaTabella();
-    }
-});
 
