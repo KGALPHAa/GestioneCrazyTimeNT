@@ -4,7 +4,12 @@ function creaNuovoConto() {
         db.collection("conti").add({
             nome: nome,
             saldo: 0
-        }).then(() => aggiornaTabella());
+        })
+        .then(() => {
+            console.log("Conto aggiunto con successo!");
+            aggiornaTabella();
+        })
+        .catch(error => console.error("Errore nell'aggiunta del conto:", error));
     }
 }
 
