@@ -74,3 +74,13 @@ function aggiungi(id) {
         alert("Importo non valido.");
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof db === "undefined") {
+        console.error("Errore: Firebase non è stato caricato correttamente.");
+    } else {
+        console.log("Firebase è pronto!");
+        aggiornaTabella();
+    }
+});
+
