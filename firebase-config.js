@@ -11,6 +11,4 @@ const firebaseConfig = {
 
 // Inizializza Firebase
 firebase.initializeApp(firebaseConfig);
-
-// Connessione al database Firestore
 const db = firebase.firestore();
