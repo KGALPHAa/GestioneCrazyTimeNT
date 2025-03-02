@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Conti</title>
+    <title>Gestione Conti con Firebase</title>
     <link rel="stylesheet" href="style.css">
+    <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <script defer src="firebase-config.js"></script>
+    <script defer src="script.js"></script>
 </head>
 <body>
     <h1>Gestione Conti Bancari</h1>
@@ -18,57 +22,8 @@
             </tr>
         </thead>
         <tbody id="tabella-conti">
-            <!-- I conti verranno aggiunti qui dinamicamente -->
+            <!-- I conti verranno caricati qui -->
         </tbody>
     </table>
-    
-    <script>
-        let conti = [];
-
-        function creaNuovoConto() {
-            let nome = prompt("Inserisci il nome del conto:");
-            if (nome) {
-                conti.push({ nome: nome, saldo: 0 });
-                aggiornaTabella();
-            }
-        }
-
-        function aggiornaTabella() {
-            let tbody = document.getElementById("tabella-conti");
-            tbody.innerHTML = "";
-            conti.forEach((conto, index) => {
-                let riga = document.createElement("tr");
-                riga.innerHTML = `
-                    <td>${conto.nome}</td>
-                    <td>€${conto.saldo.toFixed(2)}</td>
-                    <td>
-                        <button onclick="preleva(${index})">Preleva</button>
-                        <button onclick="aggiungi(${index})">Aggiungi</button>
-                    </td>
-                `;
-                tbody.appendChild(riga);
-            });
-        }
-
-        function preleva(index) {
-            let importo = parseFloat(prompt("Inserisci l'importo da prelevare:"));
-            if (!isNaN(importo) && importo > 0 && conti[index].saldo >= importo) {
-                conti[index].saldo -= importo;
-                aggiornaTabella();
-            } else {
-                alert("Importo non valido o saldo insufficiente.");
-            }
-        }
-
-        function aggiungi(index) {
-            let importo = parseFloat(prompt("Inserisci l'importo da aggiungere:"));
-            if (!isNaN(importo) && importo > 0) {
-                conti[index].saldo += importo;
-                aggiornaTabella();
-            } else {
-                alert("Importo non valido.");
-            }
-        }
-    </script>
 </body>
 </html>
