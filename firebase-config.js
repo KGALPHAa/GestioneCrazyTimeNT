@@ -1,12 +1,16 @@
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 const firebaseConfig = {
-  apiKey: "AIzaSyBJsRhSpnnXvM3jwLJxWQf0jzQwIEDVx_8",
-  authDomain: "crazytime-2d968.firebaseapp.com",
-  projectId: "crazytime-2d968",
-  storageBucket: "crazytime-2d968.firebasestorage.app",
-  messagingSenderId: "277085648275",
-  appId: "1:277085648275:web:0e7d8ff6e9299bc9a3a466",
-  measurementId: "G-BLDYKH8E8R"
+    apiKey: "AIzaSyBJsRhSpnnXvM3jwLJxWQf0jzQwIEDVx_8",
+    authDomain: "crazytime-2d968.firebaseapp.com",
+    projectId: "crazytime-2d968",
+    storageBucket: "crazytime-2d968.appspot.com",
+    messagingSenderId: "277085648275",
+    appId: "1:277085648275:web:0e7d8ff6e9299bc9a3a466"
 };
 
+// Inizializza Firebase
 firebase.initializeApp(firebaseConfig);
+
+// Connessione al database Firestore
 const db = firebase.firestore();
