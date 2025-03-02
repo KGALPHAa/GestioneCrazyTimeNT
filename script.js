@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", aggiornaTabella);
+
 function creaNuovoConto() {
     let nome = prompt("Inserisci il nome del conto:");
     if (nome) {
@@ -16,31 +18,59 @@ function creaNuovoConto() {
 function aggiornaTabella() {
     let tbody = document.getElementById("tabella-conti");
     tbody.innerHTML = "";
+
     db.collection("conti").get().then(snapshot => {
         snapshot.forEach(doc => {
             let conto = doc.data();
+            let id = doc.id;
+
             let riga = document.createElement("tr");
             riga.innerHTML = `
                 <td>${conto.nome}</td>
                 <td>€${conto.saldo.toFixed(2)}</td>
                 <td>
-                    <button onclick="modificaSaldo('${doc.id}', -prompt('Quanto prelevare?'))">Preleva</button>
-                    <button onclick="modificaSaldo('${doc.id}', prompt('Quanto aggiungere?'))">Aggiungi</button>
+                    <button onclick="preleva('${id}')">Preleva</button>
+                    <button onclick="aggiungi('${id}')">Aggiungi</button>
                 </td>
             `;
             tbody.appendChild(riga);
         });
-    });
+    })
+    .catch(error => console.error("Errore nel caricamento dei conti:", error));
 }
 
-function modificaSaldo(id, importo) {
-    if (!importo || isNaN(importo)) return alert("Importo non valido!");
-    importo = parseFloat(importo);
-
-    db.collection("conti").doc(id).get().then(doc => {
-        let nuovoSaldo = doc.data().saldo + importo;
-        db.collection("conti").doc(id).update({ saldo: nuovoSaldo }).then(() => aggiornaTabella());
-    });
+function preleva(id) {
+    let importo = parseFloat(prompt("Inserisci l'importo da prelevare:"));
+    if (!isNaN(importo) && importo > 0) {
+        db.collection("conti").doc(id).get().then(doc => {
+            if (doc.exists) {
+                let conto = doc.data();
+                let nuovoSaldo = conto.saldo - importo;
+                if (nuovoSaldo >= 0) {
+                    db.collection("conti").doc(id).update({ saldo: nuovoSaldo })
+                    .then(() => aggiornaTabella());
+                } else {
+                    alert("Saldo insufficiente!");
+                }
+            }
+        });
+    } else {
+        alert("Importo non valido.");
+    }
 }
 
-aggiornaTabella();
+function aggiungi(id) {
+    let importo = parseFloat(prompt("Inserisci l'importo da aggiungere:"));
+    if (!isNaN(importo) && importo > 0) {
+        db.collection("conti").doc(id).get().then(doc => {
+            if (doc.exists) {
+                let conto = doc.data();
+                let nuovoSaldo = conto.saldo + importo;
+                db.collection("conti").doc(id).update({ saldo: nuovoSaldo })
+                .then(() => aggiornaTabella());
+            }
+        });
+    } else {
+        alert("Importo non valido.");
+    }
+}
